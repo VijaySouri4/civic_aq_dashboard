@@ -1,3 +1,4 @@
+import 'package:aq_dashboard/SensorDetailsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -100,9 +101,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Air Quality Dashboard'),
-      ),
+      appBar: null,
       body: Column(
         children: [
           Container(
@@ -225,7 +224,17 @@ class _HomePageState extends State<HomePage> {
                             ],
                             rows: _sensorDataList.map((sensorData) {
                               return DataRow(cells: [
-                                DataCell(Text('MODULAIR')),
+                                DataCell(InkWell(
+                                  onTap: () => {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SensorDetailsPage(
+                                                    sensorName: 'MODULAIR')))
+                                  },
+                                  child: const Text('MODULAIR'),
+                                )),
                                 DataCell(
                                     Text(sensorData['sn']?.toString() ?? '')),
                                 DataCell(Text(
