@@ -21,7 +21,8 @@ class _SensorDetailsPageState extends State<SensorDetailsPage> {
   }
 
   Future<List<dynamic>> fetchData() async {
-    var url = Uri.parse('http://128.6.238.29:5000/api/data');
+    var url = Uri.parse(
+        'https://civic-aq-dashboard.com/api/data_${widget.sensorName}');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       // return json.decode(response.body);

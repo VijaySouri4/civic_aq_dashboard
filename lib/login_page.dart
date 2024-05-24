@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'home_page.dart';
+import 'map.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -17,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
     final password = _passwordController.text;
 
     final response = await http.post(
-      Uri.parse('http://128.6.238.29:5000/api/login'),
+      Uri.parse('https://civic-aq-dashboard.com/api/login'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'email': email, 'password': password}),
     );
@@ -26,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
       // Authentication successful, navigate to the dashboard
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => DisplayMap()), //HomePage()
       );
     } else {
       // Authentication failed, show an error message
