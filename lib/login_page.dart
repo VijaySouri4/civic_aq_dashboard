@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'home_page.dart';
-import 'map.dart';
+// import 'home_page.dart';
+// import 'map.dart';
+import 'maps_google_temp.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,6 +14,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FocusNode _passwordFocusNode = FocusNode();
 
   Future<void> _login() async {
     final email = _emailController.text;
@@ -24,10 +27,14 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if (response.statusCode == 200) {
+      // Save login state
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
+
       // Authentication successful, navigate to the dashboard
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => DisplayMap()), //HomePage()
+        MaterialPageRoute(builder: (context) => MapPage()), //HomePage()
       );
     } else {
       // Authentication failed, show an error message
@@ -84,6 +91,10 @@ class _LoginPageState extends State<LoginPage> {
                   labelText: 'Email',
                   prefixIcon: Icon(Icons.email),
                 ),
+                textInputAction: TextInputAction.next,
+                onSubmitted: (_) {
+                  FocusScope.of(context).requestFocus(_passwordFocusNode);
+                },
               ),
               SizedBox(height: 16.0),
               TextField(
@@ -93,6 +104,11 @@ class _LoginPageState extends State<LoginPage> {
                   prefixIcon: Icon(Icons.lock),
                 ),
                 obscureText: true,
+                focusNode: _passwordFocusNode,
+                textInputAction: TextInputAction.done,
+                onSubmitted: (_) {
+                  _login();
+                },
               ),
               SizedBox(height: 24.0),
               ElevatedButton(
