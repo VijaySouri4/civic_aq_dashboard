@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'sensorDetailsWidget.dart';
 import 'summaryTable.dart';
 
 class MapPage extends StatefulWidget {
@@ -10,53 +11,54 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   GoogleMapController? mapController;
   final LatLng _center = const LatLng(40.66576, -74.21225);
+  String? selectedSensorId;
 
   final List<Map<String, dynamic>> locations = [
     {
       'title': 'Farley Towers', //'MOD00647',
-      "id": "1",
+      "id": 'MOD00647', //"1",
       'lat': 40.663230228015024,
       'lon': -74.21905805396766,
       'color': 'green'
     },
     {
       'title': 'Mravlag, Building L', //'MOD00640',
-      "id": "2",
+      "id": 'MOD00640', //"2",
       'lat': 40.64689059643284,
       'lon': -74.21452471845336,
       'color': 'green'
     },
     {
       'title': 'E-Port Center', //'MOD00642',
-      "id": "3",
+      "id": 'MOD00642', //"3",
       'lat': 40.65378622504938,
       'lon': -74.18312423009269,
       'color': 'green'
     },
     {
       'title': 'Kennedy Arms', //'MOD00641',
-      "id": "4",
+      "id": 'MOD00641', //"4",
       'lat': 40.66758328986866,
       'lon': -74.21969326518372,
       'color': 'green'
     },
     {
       'title': 'Ford Leonard', //'MOD00646',
-      "id": "5",
+      "id": 'MOD00646', //"5",
       'lat': 40.6595356872148,
       'lon': -74.19994720310858,
       'color': 'green'
     },
     {
       'title': 'Marvlag, Building K', //'MOD00638',
-      "id": "6",
+      "id": 'MOD00638', //"6",
       'lat': 40.64706470283402,
       'lon': -74.21178765452444,
       'color': 'green'
     },
     {
       'title': 'Marvalag, Building B', //'MOD00648',
-      "id": "7",
+      "id": 'MOD00648', //"7",
       'lat': 40.64668781589756,
       'lon': -74.21368178580045,
       'color': 'green'
@@ -66,6 +68,12 @@ class _MapPageState extends State<MapPage> {
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
       mapController = controller;
+    });
+  }
+
+  void _onMarkerTapped(String sensorId) {
+    setState(() {
+      selectedSensorId = sensorId;
     });
   }
 
@@ -109,7 +117,9 @@ class _MapPageState extends State<MapPage> {
                   width: 1.0,
                 ),
               ),
-              child: Summarytable(), // Using the HomePage widget here
+              child: selectedSensorId == null
+                  ? const Summarytable()
+                  : SensorDetailsWidget(sensorId: selectedSensorId!),
             ),
           ),
         ],
@@ -139,6 +149,9 @@ class _MapPageState extends State<MapPage> {
           title: location['title'],
         ),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        onTap: () {
+          _onMarkerTapped(location['id']);
+        },
       );
     }).toSet();
   }
