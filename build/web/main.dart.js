@@ -45119,7 +45119,7 @@ td(){var s=0,r=A.N(t.H),q=1,p,o=this,n,m,l,k,j,i,h
 var $async$td=A.O(function(a,b){if(a===1){p=b
 s=q}while(true)switch(s){case 0:q=3
 s=6
-return A.X(A.aSF(A.fB("http://128.6.238.29:5000/api/latest")),$async$td)
+return A.X(A.aSF(A.fB("https://civic-aq-dashboard.com/api/latest")),$async$td)
 case 6:n=b
 if(n.b===200){j=n
 m=B.bH.en(0,A.aE0(A.aCK(j.e).c.a.h(0,"charset")).en(0,j.w))

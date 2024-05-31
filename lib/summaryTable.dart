@@ -43,8 +43,8 @@ class _HomePageState extends State<Summarytable> {
 
   Future<void> _fetchSensorData() async {
     try {
-      final response =
-          await http.get(Uri.parse('http://128.6.238.29:5000/api/latest'));
+      final response = await http.get(Uri.parse(
+          'https://civic-aq-dashboard.com/api/latest')); //('https://128.6.238.29:5000/api/latest'));
       // print('Response status: ${response.statusCode}');
       if (response.statusCode == 200) {
         List<dynamic> data = json.decode(response.body);
