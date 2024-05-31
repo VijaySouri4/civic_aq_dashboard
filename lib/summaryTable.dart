@@ -89,7 +89,7 @@ class _HomePageState extends State<Summarytable> {
   }
 
   void _startTimer() {
-    _timer = Timer.periodic(Duration(minutes: 5), (timer) {
+    _timer = Timer.periodic(Duration(minutes: 1), (timer) {
       _fetchSensorData();
     });
   }

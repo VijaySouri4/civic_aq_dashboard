@@ -17,49 +17,49 @@ class _MapPageState extends State<MapPage> {
       "id": "1",
       'lat': 40.663230228015024,
       'lon': -74.21905805396766,
-      'color': 'purple'
+      'color': 'green'
     },
     {
       'title': 'Mravlag, Building L', //'MOD00640',
       "id": "2",
       'lat': 40.64689059643284,
       'lon': -74.21452471845336,
-      'color': 'purple'
+      'color': 'green'
     },
     {
       'title': 'E-Port Center', //'MOD00642',
       "id": "3",
       'lat': 40.65378622504938,
       'lon': -74.18312423009269,
-      'color': 'purple'
+      'color': 'green'
     },
     {
       'title': 'Kennedy Arms', //'MOD00641',
       "id": "4",
       'lat': 40.66758328986866,
       'lon': -74.21969326518372,
-      'color': 'purple'
+      'color': 'green'
     },
     {
       'title': 'Ford Leonard', //'MOD00646',
       "id": "5",
       'lat': 40.6595356872148,
       'lon': -74.19994720310858,
-      'color': 'yellow'
+      'color': 'green'
     },
     {
       'title': 'Marvlag, Building K', //'MOD00638',
       "id": "6",
       'lat': 40.64706470283402,
       'lon': -74.21178765452444,
-      'color': 'purple'
+      'color': 'green'
     },
     {
       'title': 'Marvalag, Building B', //'MOD00648',
       "id": "7",
       'lat': 40.64668781589756,
       'lon': -74.21368178580045,
-      'color': 'purple'
+      'color': 'green'
     }
   ];
 
@@ -119,12 +119,26 @@ class _MapPageState extends State<MapPage> {
 
   Set<Marker> _createMarkers() {
     return locations.map((location) {
+      BitmapDescriptor markerIcon;
+      switch (location['color']) {
+        case 'green':
+          markerIcon =
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+          break;
+        case 'yellow':
+          markerIcon =
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow);
+          break;
+        default:
+          markerIcon = BitmapDescriptor.defaultMarker;
+      }
       return Marker(
         markerId: MarkerId(location['id']),
         position: LatLng(location['lat'], location['lon']),
         infoWindow: InfoWindow(
           title: location['title'],
         ),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
       );
     }).toSet();
   }
