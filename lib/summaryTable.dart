@@ -52,12 +52,10 @@ class _HomePageState extends State<Summarytable> {
         List<Map<String, dynamic>> parsedData = data.map((item) {
           final sensorData = item['data'];
           final timestamp = sensorData[1];
-
           DateTime gmtTime = DateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
               .parse(timestamp, true);
           DateTime localTime = gmtTime.toLocal();
-          final localTimestamp =
-              DateFormat('MM-dd-yy   HH:mm').format(localTime);
+          final localTimestamp = DateFormat('MMMM d, HH:mm').format(localTime);
 
           final pm1 = sensorData[8] != null ? double.parse(sensorData[8]) : 0.0;
           final pm10 =
@@ -65,15 +63,38 @@ class _HomePageState extends State<Summarytable> {
           final pm25 =
               sensorData[10] != null ? double.parse(sensorData[10]) : 0.0;
           final aqi = [pm1, pm10, pm25].reduce((a, b) => a > b ? a : b);
+          final co = sensorData[4] != null ? double.parse(sensorData[4]) : 0.0;
+          final no = sensorData[5] != null ? double.parse(sensorData[5]) : 0.0;
+          final no2 = sensorData[6] != null ? double.parse(sensorData[6]) : 0.0;
+          final o3 = sensorData[7] != null ? double.parse(sensorData[7]) : 0.0;
+          final pm2point5 = 0.0;
+          final co2 = 0.0;
+          final sensor_id = "#000";
+          final temp =
+              sensorData[12] != null ? double.parse(sensorData[12]) : 0.0;
+          final humidity = 0.0;
+          final pressure = 0.0;
 
-          print(
-              'Sensor ID: ${sensorData[3]}, Timestamp: $localTimestamp, AQI: $aqi');
+          // print(
+          //     'Sensor ID: ${sensorData[3]}, Timestamp: $localTimestamp, AQI: $aqi');
 
           return {
             'device_name': sensorNames[sensorData[3]] ?? sensorData[3],
             'timestamp': localTimestamp,
             'aqi': aqi,
             'status': 'active', // Status remains the same
+            'co': co,
+            'no': no,
+            'no2': no2,
+            'o3': o3,
+            'pm1': pm1,
+            'pm10': pm10,
+            'pm 2.5': pm2point5, // missing
+            'co2': co2, //missing
+            'sensor_id': sensor_id,
+            'temp': temp,
+            'humidity': humidity,
+            'pressure': pressure
           };
         }).toList();
 
@@ -96,35 +117,290 @@ class _HomePageState extends State<Summarytable> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return Scaffold(
+      body: SingleChildScrollView(
       scrollDirection: Axis.vertical,
-      child: SelectionArea(
-        child: Container(
-          width: double.infinity,
-          child: DataTable(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.grey,
-                width: 8.0,
+      child: DataTable(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+              color: Color(0xFFE7E6F2),
+              width: 1.0,
+            ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        dataRowMaxHeight: double.infinity,
+        headingRowColor: MaterialStateProperty.all<Color>(Color(0xFFEEEEEE)),
+        columns: const [
+          DataColumn(
+              label: Text('Device Name',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFA6A9AA),
+                  ))),
+          DataColumn(
+              label: Text('Status',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFA6A9AA),
+                  ))),
+          DataColumn(
+              label: Text('Last Updated',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFA6A9AA),
+                  ))),
+          DataColumn(
+              label: Text('CO',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFA6A9AA),
+                  ))),
+          DataColumn(
+              label: Text('NO',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFA6A9AA),
+                  ))),
+          DataColumn(
+              label: Text('NO2',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFA6A9AA),
+                  ))),
+          DataColumn(
+              label: Text('O3',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFA6A9AA),
+                  ))),
+          DataColumn(
+              label: Text('PM1',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFA6A9AA),
+                  ))),
+          DataColumn(
+              label: Text('PM10',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFA6A9AA),
+                  ))),
+          DataColumn(
+              label: Text('AQI',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFA6A9AA),
+                  ))),
+          DataColumn(
+              label: Text('PM 2.5 (µg/m³)',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFA6A9AA),
+                  ))),
+          DataColumn(
+              label: Text('CO2 (ppm)',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFA6A9AA),
+                  ))),
+          // DataColumn(
+          //     label: Text('TEMP',
+          //         textAlign: TextAlign.left,
+          //         style: TextStyle(
+          //           fontSize: 14,
+          //           fontWeight: FontWeight.w500,
+          //           color: Color(0xFFA6A9AA),
+          //         ))),
+          // DataColumn(
+          //     label: Text('HUMIDITY',
+          //         textAlign: TextAlign.left,
+          //         style: TextStyle(
+          //           fontSize: 14,
+          //           fontWeight: FontWeight.w500,
+          //           color: Color(0xFFA6A9AA),
+          //         ))),
+          // DataColumn(
+          //     label: Text('PRESSURE',
+          //         textAlign: TextAlign.left,
+          //         style: TextStyle(
+          //           fontSize: 14,
+          //           fontWeight: FontWeight.w500,
+          //           color: Color(0xFFA6A9AA),
+          //         ))),
+        ],
+        rows: _sensorDataList.map((sensorData) {
+          return DataRow(cells: [
+            DataCell(
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      sensorData['device_name'] ?? '',
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black),
+                    ),
+                    const SizedBox(height: 6.0),
+                    Text(
+                      'QuantAQ: ${sensorData['sensor_id'] ?? ''}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF8E8C8C),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            columns: [
-              DataColumn(label: Text('Device Name')),
-              DataColumn(label: Text('Timestamp')),
-              DataColumn(label: Text('AQI')),
-              DataColumn(label: Text('Status')),
-            ],
-            rows: _sensorDataList.map((sensorData) {
-              return DataRow(cells: [
-                DataCell(Text(sensorData['device_name'] ?? '')),
-                DataCell(Text(sensorData['timestamp'] ?? '')),
-                DataCell(Text(sensorData['aqi'].toString())),
-                DataCell(Icon(Icons.check_circle, color: Colors.green)),
-              ]);
-            }).toList(),
-          ),
-        ),
+            DataCell(Row(
+              children: [
+                Image.asset(
+                  sensorData['status'] == 'active'
+                      ? 'green_sensor.png'
+                      : 'red_sensor.png',
+                  width: 24,
+                  height: 24,
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  sensorData['status'] == "active" ? "Active" : "Inactive",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: sensorData['status'] == 'active'
+                        ? Colors.green
+                        : Colors.red,
+                  ),
+                ),
+              ],
+            )),
+            DataCell(Text(
+              sensorData['timestamp'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black),
+            )),
+            DataCell(Text(
+              sensorData['co'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black),
+            )),
+            DataCell(Text(
+              sensorData['no'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black),
+            )),
+            DataCell(Text(
+              sensorData['no2'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black),
+            )),
+            DataCell(Text(
+              sensorData['o3'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black),
+            )),
+            DataCell(Text(
+              sensorData['pm1'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black),
+            )),
+            DataCell(Text(
+              sensorData['pm10'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black),
+            )),
+            DataCell(Text(
+              sensorData['aqi'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black),
+            )),
+            DataCell(Text(
+              sensorData['pm 2.5'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black),
+            )),
+            DataCell(Text(
+              sensorData['co2'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black),
+            )),
+            // DataCell(Text(
+            //   sensorData['temp'].toString(),
+            //   style: const TextStyle(
+            //       fontSize: 16,
+            //       fontWeight: FontWeight.w400,
+            //       color: Colors.black),
+            // )),
+            // DataCell(Text(
+            //   sensorData['pressure'].toString(),
+            //   style: const TextStyle(
+            //       fontSize: 16,
+            //       fontWeight: FontWeight.w400,
+            //       color: Colors.black),
+            // )),
+            // DataCell(Text(
+            //   sensorData['humidity'].toString(),
+            //   style: const TextStyle(
+            //       fontSize: 16,
+            //       fontWeight: FontWeight.w400,
+            //       color: Colors.black),
+            // )),
+          ]);
+        }).toList(),
       ),
+    ),
     );
+    
   }
 }

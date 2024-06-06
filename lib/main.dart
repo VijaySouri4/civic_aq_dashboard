@@ -1,12 +1,15 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 // import 'package:http/http.dart' as http;
 // import 'dart:convert';
 import 'login_page.dart';
 // import 'home_page.dart';
-// import 'summaryTable.dart';
+import 'summaryTable.dart';
 // import 'map.dart';
-import 'maps_google_temp.dart';
+import 'maps_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dashboard.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,6 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'AQ Dashboard',
       theme: ThemeData(
         primarySwatch: Colors.lime,
@@ -26,9 +30,9 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator(); // Show loading indicator while waiting
           } else if (snapshot.hasData && snapshot.data == true) {
-            return MapPage(); // User is logged in, show the map page
+            return DashboardPage(); // User is logged in, show the map page
           } else {
-            return LoginPage(); // User is not logged in, show the login page
+            return DashboardPage(); // User is not logged in, show the login page
           }
         },
       ),

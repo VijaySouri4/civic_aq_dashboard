@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 // import 'home_page.dart';
 // import 'map.dart';
-import 'maps_google_temp.dart';
+import 'maps_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {

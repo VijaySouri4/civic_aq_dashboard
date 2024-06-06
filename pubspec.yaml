@@ -42,6 +42,7 @@ dependencies:
   google_maps_flutter: ^2.5.3
   google_maps_flutter_web:
   mapbox_gl: ^0.14.0
+  custom_info_window: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +76,8 @@ flutter:
     - assets/green_sensor.png
     - assets/yellow_sensor.png
     - assets/purple_sensor.png
+    - assets/gray_sensor_on.png
+    - assets/gray_sensor_off.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
