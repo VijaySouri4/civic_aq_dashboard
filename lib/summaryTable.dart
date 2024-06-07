@@ -117,8 +117,8 @@ class _HomePageState extends State<Summarytable> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
+    return 
+       SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: DataTable(
         decoration: BoxDecoration(
@@ -399,8 +399,8 @@ class _HomePageState extends State<Summarytable> {
           ]);
         }).toList(),
       ),
-    ),
     );
+   
     
   }
 }

@@ -211,6 +211,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'dart:ui' as ui;
+import 'dart:typed_data';
 
 class MapPage extends StatefulWidget {
   @override
@@ -223,6 +225,7 @@ class _MapPageState extends State<MapPage> {
   String? selectedSensorId;
   LatLng? selectedPosition;
   OverlayEntry? popupOverlay;
+  Set<Marker> markers = Set<Marker>();
 
   final List<Map<String, dynamic>> locations = [
     {
@@ -276,6 +279,19 @@ class _MapPageState extends State<MapPage> {
     }
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _loadMarkers();
+  }
+
+  void _loadMarkers() async {
+    final Set<Marker> loadedMarkers = await _createMarkers();
+    setState(() {
+      markers = loadedMarkers;
+    });
+  }
+
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
       mapController = controller;
@@ -304,23 +320,202 @@ class _MapPageState extends State<MapPage> {
 
     popupOverlay = OverlayEntry(
       builder: (context) {
-        // Assuming the marker is at the center of the screen
         return Positioned(
-          left: screenWidth / 2 - 50,
+          left: screenWidth / 2 - 100,
           top: screenHeight / 2 - 100,
           child: Material(
-            color: Colors.transparent,
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(8),
-                  color: Colors.white,
-                  child: Text('Sensor ID: $selectedSensorId'),
-                ),
-                CustomPaint(
-                  painter: TrianglePainter(),
-                ),
-              ],
+            child: Container(
+              padding: EdgeInsets.all(20),
+              width: 300,
+              height: 300,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 8,
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Mravlag Manor 3',
+                        style: TextStyle(
+                          fontFamily: 'Work Sans',
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      Spacer(),
+                      IconButton(
+                        icon: Icon(Icons.close),
+                        onPressed: () {
+                          _hidePopup();
+                        },
+                      ),
+                    ],
+                  ),
+                  // SizedBox(height: 0.1),
+                  Text(
+                    'Last Updated 21:31',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Work Sans",
+                      color: Colors.grey,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                  SizedBox(height: 24.0),
+                  Text(
+                    'AIR QUALITY MEASURES',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      color: Colors.grey,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                  SizedBox(height: 8.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'AQI',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontFamily: 'Work Sans',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 110,
+                      ),
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Color(0xFF5D9913),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Text(
+                            '30',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontFamily: 'Work Sans',
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        'Good',
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: "Work Sans",
+                          color: Color(0xFF8E8C8C),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'PM 2.5',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontFamily: 'Work Sans',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 6,
+                      ),
+                      Text(
+                        "μg/m³",
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontFamily: 'Work Sans',
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF8E8C8C),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 40,
+                      ),
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFCF0808),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Text(
+                            '100',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontFamily: 'Work Sans',
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        'Unhealty',
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: "Work Sans",
+                          color: Color(0xFF8E8C8C),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  Row(
+                    children: [
+                      Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          // Implement your onPressed functionality here
+                        },
+                        child: Text(
+                          'View Device History',
+                          style: TextStyle(
+                            color: Color(0xFF9795B5),
+                            decoration: TextDecoration.underline,
+                            decorationColor: Color(0xFF9795B5),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: "Work Sans",
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         );
@@ -354,11 +549,11 @@ class _MapPageState extends State<MapPage> {
                           padding: EdgeInsets.fromLTRB(20, 16, 20, 20),
                           child: GestureDetector(
                             onTap: () {
-                              LatLng position = LatLng(
-                                  locations[index]['lat'], locations[index]['lon']);
+                              LatLng position = LatLng(locations[index]['lat'],
+                                  locations[index]['lon']);
                               _onMarkerTapped(locations[index]['id'], position);
-                              _moveCameraToLocation(
-                                  locations[index]['lat'], locations[index]['lon']);
+                              _moveCameraToLocation(locations[index]['lat'],
+                                  locations[index]['lon']);
                               _showPopup(context, position);
                             },
                             child: Row(
@@ -411,7 +606,7 @@ class _MapPageState extends State<MapPage> {
                             target: _center,
                             zoom: 12.0,
                           ),
-                          markers: _createMarkers(),
+                          markers: markers,
                         ),
                       ],
                     ),
@@ -425,56 +620,141 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-  Set<Marker> _createMarkers() {
-    return locations.map((location) {
-      BitmapDescriptor markerIcon;
+//   Set<Marker> _createMarkers() {
+//     return locations.map((location) {
+//       BitmapDescriptor markerIcon;
+//       switch (location['color']) {
+//         case 'green':
+//           markerIcon =
+//               BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+//           break;
+//         case 'yellow':
+//           markerIcon =
+//               BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow);
+//           break;
+//         default:
+//           markerIcon = BitmapDescriptor.defaultMarker;
+//       }
+//       return Marker(
+//         markerId: MarkerId(location['id']),
+//         position: LatLng(location['lat'], location['lon']),
+//         infoWindow: InfoWindow(
+//           title: location['title'],
+//         ),
+//         icon: markerIcon,
+//         onTap: () {
+//           _onMarkerTapped(
+//               location['id'], LatLng(location['lat'], location['lon']));
+//         },
+//       );
+//     }).toSet();
+//   }
+// }
+
+  Future<BitmapDescriptor> createCustomMarkerIcon(
+      Color color, String text) async {
+    final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
+    final Paint paint = Paint()..color = color.withOpacity(0.9);
+    final double radius = 20.0; // Adjust the radius as needed
+
+    canvas.drawCircle(
+      Offset(radius, radius),
+      radius,
+      paint,
+    );
+
+    TextPainter textPainter = TextPainter(
+      text: TextSpan(
+        text: text,
+        style: const TextStyle(
+          fontFamily: "Work Sans",
+          fontSize: 18.0,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout();
+    textPainter.paint(
+      canvas,
+      Offset(
+        radius - textPainter.width / 2,
+        radius - textPainter.height / 2,
+      ),
+    );
+
+    final ui.Image image = await pictureRecorder.endRecording().toImage(
+          (radius * 2).toInt(),
+          (radius * 2).toInt(),
+        );
+
+    final ByteData? byteData =
+        await image.toByteData(format: ui.ImageByteFormat.png);
+    final Uint8List bytes = byteData!.buffer.asUint8List();
+
+    return BitmapDescriptor.fromBytes(bytes);
+  }
+
+  Future<Set<Marker>> _createMarkers() async {
+    final List<Future<Marker>> futureMarkers = locations.map((location) async {
+      Color markerColor;
       switch (location['color']) {
         case 'green':
-          markerIcon =
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+          markerColor = Colors.green;
           break;
         case 'yellow':
-          markerIcon =
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow);
+          markerColor = Colors.yellow;
           break;
         default:
-          markerIcon = BitmapDescriptor.defaultMarker;
+          markerColor = Colors.blue; // Default color
       }
+      final BitmapDescriptor markerIcon =
+          await createCustomMarkerIcon(markerColor, "15");
+
       return Marker(
         markerId: MarkerId(location['id']),
         position: LatLng(location['lat'], location['lon']),
-        infoWindow: InfoWindow(
-          title: location['title'],
-        ),
+        // infoWindow: InfoWindow(
+        //   title: location['title'],
+        // ),
         icon: markerIcon,
         onTap: () {
           _onMarkerTapped(
               location['id'], LatLng(location['lat'], location['lon']));
         },
       );
-    }).toSet();
+    }).toList();
+
+    return futureMarkers.isNotEmpty
+        ? Set<Marker>.from(await Future.wait(futureMarkers))
+        : Set<Marker>();
   }
 }
 
-class TrianglePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    var paint = Paint()
-      ..color = Colors.white
-      ..style = PaintingStyle.fill;
 
-    var path = Path();
-    path.moveTo(0, 0);
-    path.lineTo(size.width / 2, size.height);
-    path.lineTo(size.width, 0);
-    path.close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
-  }
-}
-
+// Stack(
+//               children: [
+//                 Container(
+//                   padding: EdgeInsets.all(8),
+//                   margin: EdgeInsets.only(top: 10),
+//                   color: Colors.white,
+//                   child: Column(
+//                     mainAxisSize: MainAxisSize.min,
+//                     children: [
+//                       Text('Sensor ID: $selectedSensorId'),
+                      
+//                     ],
+//                   ),
+//                 ),
+//                 Positioned(
+//                   right: 0,
+//                   top: 0,
+//                   child: IconButton(
+//                     icon: Icon(Icons.close),
+//                     onPressed: _hidePopup,
+//                   ),
+//                 ),
+//               ],
+//             ),
