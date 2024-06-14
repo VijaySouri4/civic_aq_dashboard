@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'maps_view.dart';
 import 'summaryTable.dart';
+import 'table_view.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -25,10 +26,10 @@ class _DashboardPageState extends State<DashboardPage> {
             child: Text(
               'Air Quality Elizabeth',
               style: TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.w700,
-                fontFamily: 'Poppins',
-              ),
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Work Sans',
+                  color: Color(0xFF2E374C)),
             ),
           ),
         ),
@@ -38,6 +39,7 @@ class _DashboardPageState extends State<DashboardPage> {
             child: Align(
               alignment: Alignment.centerRight,
               child: InkWell(
+                hoverColor: Colors.transparent,
                 onTap: () {
                   // Add your log out functionality here
                 },
@@ -49,16 +51,16 @@ class _DashboardPageState extends State<DashboardPage> {
                       size: 16.0, // Adjust the icon size as needed
                       color: Colors.grey, // Set the icon color
                     ),
-                     SizedBox(
+                    SizedBox(
                         width:
                             4.0), // Add some spacing between the icon and text
-                     Text(
+                    Text(
                       'Log out',
                       style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,
                         fontFamily: 'Work Sans',
-                        color: Colors.black,
+                        color: Color(0xFF8D8BA7),
                       ),
                     ),
                   ],
@@ -69,10 +71,21 @@ class _DashboardPageState extends State<DashboardPage> {
         ],
       ),
       body: Container(
-        color: Color.fromARGB(255, 242, 241, 238),
+        color: Color(0xFFF4F6F9),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 27.0, top: 16.0),
+              child: Text(
+                "Overview",
+                style: TextStyle(
+                    fontFamily: "Work Sans",
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF2E374C)),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 16.0, top: 16.0),
               child: Row(
@@ -88,11 +101,20 @@ class _DashboardPageState extends State<DashboardPage> {
                           });
                         },
                         style: ButtonStyle(
+                          overlayColor:
+                              MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
+                            if (states.contains(MaterialState.hovered)) {
+                              return Colors.transparent;
+                            }
+                            return Colors.transparent;
+                          }),
                           foregroundColor: MaterialStateProperty.all<Color>(
                             _isMapView ? Colors.black : Colors.grey,
                           ),
                           textStyle: MaterialStateProperty.all<TextStyle>(
                             TextStyle(
+                              color: Color(0xFF2E374C),
                               fontFamily: 'Work Sans',
                               fontSize: 24,
                               fontWeight: _isMapView
@@ -111,7 +133,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             height: 7.0, // Thickness of the underline
                             width:
                                 110.0, // Adjust this value to match the text width or set it dynamically
-                            color: Colors.blue,
+                            color: Color(0xFF3361FF),
                           ),
                         ),
                     ],
@@ -128,11 +150,20 @@ class _DashboardPageState extends State<DashboardPage> {
                           });
                         },
                         style: ButtonStyle(
+                          overlayColor:
+                              MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
+                            if (states.contains(MaterialState.hovered)) {
+                              return Colors.transparent;
+                            }
+                            return Colors.transparent;
+                          }),
                           foregroundColor: MaterialStateProperty.all<Color>(
                             _isTableView ? Colors.black : Colors.grey,
                           ),
                           textStyle: MaterialStateProperty.all<TextStyle>(
                             TextStyle(
+                              color: Color(0xFF2E374C),
                               fontFamily: 'Work Sans',
                               fontSize: 24,
                               fontWeight: _isTableView
@@ -151,7 +182,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             height: 7.0, // Thickness of the underline
                             width:
                                 114.0, // Adjust this value to match the text width or set it dynamically
-                            color: Colors.blue,
+                            color: Color(0xFF3361FF),
                           ),
                         ),
                     ],
@@ -163,7 +194,7 @@ class _DashboardPageState extends State<DashboardPage> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(40, 24, 40, 40),
                 child: Container(
-                  child: _isMapView ? MapPage() : const Summarytable(),
+                  child: _isMapView ? MapPage() : TablePage(),
                 ),
               ),
             ),

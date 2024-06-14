@@ -83,10 +83,10 @@ class _MapPageState extends State<MapPage> {
       setState(() {
         selectedSymbolTitle = title;
       });
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => SensorDetailsPage(sensorName: title)),
-      // );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SensorDetailsPage(sensorName: title)),
+      );
     }
   }
 

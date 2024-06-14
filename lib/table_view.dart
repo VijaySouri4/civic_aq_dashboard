@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'summaryTable.dart';
 
 class TablePage extends StatefulWidget {
   const TablePage({super.key});
@@ -10,6 +11,15 @@ class TablePage extends StatefulWidget {
 class _TablePageState extends State<TablePage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final double screenWidth = MediaQuery.of(context).size.width;
+    return Padding(padding: EdgeInsets.only(left : 40, right: 40, bottom: 40),
+    child: Container(
+      width: screenWidth,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Summarytable(),
+      ),
+    ),
+    );
   }
 }

@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 import 'package:intl/intl.dart';
+import 'SensorDetailsPageYash.dart';
+import 'SensorDetailsPage.dart';
 
 class Summarytable extends StatefulWidget {
   const Summarytable({super.key});
@@ -69,11 +71,8 @@ class _HomePageState extends State<Summarytable> {
           final o3 = sensorData[7] != null ? double.parse(sensorData[7]) : 0.0;
           final pm2point5 = 0.0;
           final co2 = 0.0;
-          final sensor_id = "#000";
-          final temp =
-              sensorData[12] != null ? double.parse(sensorData[12]) : 0.0;
-          final humidity = 0.0;
-          final pressure = 0.0;
+          final sensor_id = sensorData[3] != null ? sensorData[3] : "#000";
+          final sensor_id_final = sensor_id.replaceAll('-', '');
 
           // print(
           //     'Sensor ID: ${sensorData[3]}, Timestamp: $localTimestamp, AQI: $aqi');
@@ -91,10 +90,8 @@ class _HomePageState extends State<Summarytable> {
             'pm10': pm10,
             'pm 2.5': pm2point5, // missing
             'co2': co2, //missing
-            'sensor_id': sensor_id,
-            'temp': temp,
-            'humidity': humidity,
-            'pressure': pressure
+            'sensor_id': sensor_id_final,
+            
           };
         }).toList();
 
@@ -117,42 +114,36 @@ class _HomePageState extends State<Summarytable> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-       SingleChildScrollView(
+    return  SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: DataTable(
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(
-              color: Color(0xFFE7E6F2),
+              color: Color(0xFF55607799),
               width: 1.0,
             ),
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(8.0),
         ),
         dataRowMaxHeight: double.infinity,
-        headingRowColor: MaterialStateProperty.all<Color>(Color(0xFFEEEEEE)),
+        headingRowColor: MaterialStateProperty.all<Color>(Color(0xFFFAFAFF)),
         columns: const [
           DataColumn(
               label: Text('Device Name',
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 14,
+                    fontFamily: "Work Sans",
                     fontWeight: FontWeight.w500,
                     color: Color(0xFFA6A9AA),
                   ))),
-          DataColumn(
-              label: Text('Status',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFFA6A9AA),
-                  ))),
+          
           DataColumn(
               label: Text('Last Updated',
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 14,
+                    fontFamily: "Work Sans",
                     fontWeight: FontWeight.w500,
                     color: Color(0xFFA6A9AA),
                   ))),
@@ -161,6 +152,7 @@ class _HomePageState extends State<Summarytable> {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 14,
+                    fontFamily: "Work Sans",
                     fontWeight: FontWeight.w500,
                     color: Color(0xFFA6A9AA),
                   ))),
@@ -169,6 +161,7 @@ class _HomePageState extends State<Summarytable> {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 14,
+                    fontFamily: "Work Sans",
                     fontWeight: FontWeight.w500,
                     color: Color(0xFFA6A9AA),
                   ))),
@@ -177,6 +170,7 @@ class _HomePageState extends State<Summarytable> {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 14,
+                    fontFamily: "Work Sans",
                     fontWeight: FontWeight.w500,
                     color: Color(0xFFA6A9AA),
                   ))),
@@ -185,6 +179,7 @@ class _HomePageState extends State<Summarytable> {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 14,
+                    fontFamily: "Work Sans",
                     fontWeight: FontWeight.w500,
                     color: Color(0xFFA6A9AA),
                   ))),
@@ -193,6 +188,7 @@ class _HomePageState extends State<Summarytable> {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 14,
+                    fontFamily: "Work Sans",
                     fontWeight: FontWeight.w500,
                     color: Color(0xFFA6A9AA),
                   ))),
@@ -201,6 +197,7 @@ class _HomePageState extends State<Summarytable> {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 14,
+                    fontFamily: "Work Sans",
                     fontWeight: FontWeight.w500,
                     color: Color(0xFFA6A9AA),
                   ))),
@@ -209,6 +206,7 @@ class _HomePageState extends State<Summarytable> {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 14,
+                    fontFamily: "Work Sans",
                     fontWeight: FontWeight.w500,
                     color: Color(0xFFA6A9AA),
                   ))),
@@ -217,6 +215,7 @@ class _HomePageState extends State<Summarytable> {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 14,
+                    fontFamily: "Work Sans",
                     fontWeight: FontWeight.w500,
                     color: Color(0xFFA6A9AA),
                   ))),
@@ -225,6 +224,16 @@ class _HomePageState extends State<Summarytable> {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 14,
+                    fontFamily: "Work Sans",
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFA6A9AA),
+                  ))),
+                  DataColumn(
+              label: Text('Status',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: "Work Sans",
                     fontWeight: FontWeight.w500,
                     color: Color(0xFFA6A9AA),
                   ))),
@@ -256,7 +265,14 @@ class _HomePageState extends State<Summarytable> {
         rows: _sensorDataList.map((sensorData) {
           return DataRow(cells: [
             DataCell(
-              Container(
+              GestureDetector(
+                onTap: () {
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SensorDetailsPage(sensorName: sensorData['sensor_id'] ?? '')), 
+      );
+      },
+                child: Container(
                 padding: EdgeInsets.symmetric(vertical: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,13 +281,17 @@ class _HomePageState extends State<Summarytable> {
                       sensorData['device_name'] ?? '',
                       style: const TextStyle(
                           fontSize: 16,
+                          fontFamily: "Work Sans",
                           fontWeight: FontWeight.w400,
-                          color: Colors.black),
+                          color: Color(0xFF3361FF),
+                    decoration: TextDecoration.underline,
+                    decorationColor: Color(0xFF3361FF),),
                     ),
                     const SizedBox(height: 6.0),
                     Text(
                       'QuantAQ: ${sensorData['sensor_id'] ?? ''}',
                       style: const TextStyle(
+                        fontFamily: "Work Sans",
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: Color(0xFF8E8C8C),
@@ -280,7 +300,89 @@ class _HomePageState extends State<Summarytable> {
                   ],
                 ),
               ),
+              )
             ),
+            
+            DataCell(Text(
+              sensorData['timestamp'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF2E374C),
+                  fontFamily: "Work Sans",),
+            )),
+            DataCell(Text(
+              sensorData['co'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF2E374C),
+                  fontFamily: "Work Sans"),
+            )),
+            DataCell(Text(
+              sensorData['no'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF2E374C),
+                  fontFamily: "Work Sans"),
+            )),
+            DataCell(Text(
+              sensorData['no2'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF2E374C),
+                  fontFamily: "Work Sans"),
+            )),
+            DataCell(Text(
+              sensorData['o3'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF2E374C),
+                  fontFamily: "Work Sans"),
+            )),
+            DataCell(Text(
+              sensorData['pm1'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF2E374C),
+                  fontFamily: "Work Sans"),
+            )),
+            DataCell(Text(
+              sensorData['pm10'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF2E374C),
+                  fontFamily: "Work Sans"),
+            )),
+            DataCell(Text(
+              sensorData['aqi'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF2E374C),
+                  fontFamily: "Work Sans"),
+            )),
+            DataCell(Text(
+              sensorData['pm 2.5'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF2E374C),
+                  fontFamily: "Work Sans"),
+            )),
+            DataCell(Text(
+              sensorData['co2'].toString(),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF2E374C),
+                  fontFamily: "Work Sans"),
+            )),
             DataCell(Row(
               children: [
                 Image.asset(
@@ -304,76 +406,6 @@ class _HomePageState extends State<Summarytable> {
                   ),
                 ),
               ],
-            )),
-            DataCell(Text(
-              sensorData['timestamp'].toString(),
-              style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-            )),
-            DataCell(Text(
-              sensorData['co'].toString(),
-              style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-            )),
-            DataCell(Text(
-              sensorData['no'].toString(),
-              style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-            )),
-            DataCell(Text(
-              sensorData['no2'].toString(),
-              style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-            )),
-            DataCell(Text(
-              sensorData['o3'].toString(),
-              style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-            )),
-            DataCell(Text(
-              sensorData['pm1'].toString(),
-              style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-            )),
-            DataCell(Text(
-              sensorData['pm10'].toString(),
-              style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-            )),
-            DataCell(Text(
-              sensorData['aqi'].toString(),
-              style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-            )),
-            DataCell(Text(
-              sensorData['pm 2.5'].toString(),
-              style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-            )),
-            DataCell(Text(
-              sensorData['co2'].toString(),
-              style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
             )),
             // DataCell(Text(
             //   sensorData['temp'].toString(),
