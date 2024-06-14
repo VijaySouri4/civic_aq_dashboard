@@ -43,6 +43,7 @@ dependencies:
   google_maps_flutter_web:
   mapbox_gl: ^0.14.0
   custom_info_window: ^1.0.1
+  google_fonts: ^4.0.4
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +68,15 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  fonts:
+    - family: WorkSans
+      fonts:
+        - asset: assets/fonts/WorkSans-Regular.ttf
+        - asset: assets/fonts/WorkSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/WorkSans-Italic.ttf
+          style: italic
 
   # To add assets to your application, add an assets section, like this:
   assets:

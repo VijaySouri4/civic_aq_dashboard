@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:flutter/material.dart';
 // import 'package:http/http.dart' as http;
@@ -22,8 +23,26 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'AQ Dashboard',
       theme: ThemeData(
-        primarySwatch: Colors.lime,
-      ),
+          primarySwatch: Colors.lime,
+          textTheme: GoogleFonts.workSansTextTheme() //,TextTheme(
+          //   // displayLarge: TextStyle(fontFamily: 'WorkSans'),
+          //   // displayMedium: TextStyle(fontFamily: 'WorkSans'),
+          //   // displaySmall: TextStyle(fontFamily: 'WorkSans'),
+          //   // headlineLarge: TextStyle(fontFamily: 'WorkSans'),
+          //   // headlineMedium: TextStyle(fontFamily: 'WorkSans'),
+          //   // headlineSmall: TextStyle(fontFamily: 'WorkSans'),
+          //   // titleLarge: TextStyle(fontFamily: 'WorkSans'),
+          //   // titleMedium: TextStyle(fontFamily: 'WorkSans'),
+          //   // titleSmall: TextStyle(fontFamily: 'WorkSans'),
+          //   // bodyLarge: TextStyle(fontFamily: 'WorkSans'),
+          //   // bodyMedium: TextStyle(fontFamily: 'WorkSans'),
+          //   // bodySmall: TextStyle(fontFamily: 'WorkSans'),
+          //   // labelLarge: TextStyle(fontFamily: 'WorkSans'),
+          //   // labelMedium: TextStyle(fontFamily: 'WorkSans'),
+          //   // labelSmall: TextStyle(fontFamily: 'WorkSans'),
+          //   textTheme: GoogleFonts.workSansTextTheme(),
+          // ),
+          ),
       home: FutureBuilder(
         future: _checkLoginStatus(),
         builder: (context, snapshot) {
